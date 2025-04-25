@@ -1,6 +1,7 @@
 [dingtalk]
 dingtalk_client_id = "xxxxxxxxxxxxxxx"
 dingtalk_client_secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+dingtalk_template_card_id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.schema"
 
 [open_web_ui]
 open_web_ui_api_key = "xxxxxxxxxxxxxxxxxxxxxxxxxx"
