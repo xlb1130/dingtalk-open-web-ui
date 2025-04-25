@@ -1,0 +1,9 @@
+[dingtalk]
+dingtalk_client_id = "xxxxxxxxxxxxxxx"
+dingtalk_client_secret = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
+[open_web_ui]
+open_web_ui_api_key = "xxxxxxxxxxxxxxxxxxxxxxxxxx"
+open_web_ui_host = "http://127.0.0.1:3000"
+open_web_ui_api_timeout = 300
+open_web_ui_model_name = "qwen-max"

@@ -1,0 +1,10 @@
+[project]
+name = "dingtalk-open-web-ui"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "dingtalk-stream>=0.22.1",
+    "loguru>=0.7.3",
+]
