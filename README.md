@@ -8,7 +8,7 @@ OpenWebUI通过OpenAPI方式支持MCP后，有多强大就不用多说了。
 ```
 ## 配置
 ```
-    copy config.example.py config.py
+    copy config.example.toml config.toml
 ```
 * 修改config.py中openwebui的url和apikey(在openwebui账户中获取)
 * 修改dingtalk的key和secret(在钉钉助理的自定义技能页面最底下的超链接点击获得)
@@ -17,7 +17,7 @@ OpenWebUI通过OpenAPI方式支持MCP后，有多强大就不用多说了。
 ## 钉钉卡片创建
     https://open-dev.dingtalk.com/fe/card
 * 创建时候使用最基础的markdown模板即可，然后点击右上角的保存、发布
-* 返回到卡片列表拷贝卡片模板ID, 加入到config.py
+* 返回到卡片列表拷贝卡片模板ID, 加入到config.toml
 
 ## 运行服务端
 ``` shell
