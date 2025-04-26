@@ -37,26 +37,3 @@ class DingtalkCallback(dingtalk_stream.GraphHandler):
         response.headers['Content-Type'] = 'application/json'
         response.body = json.dumps({}, ensure_ascii=False)
         return response
-
-    # def reply_markdown(self, webhook, content):
-    #     payload = {
-    #         'contentType': 'ai_card',
-    #         'content': {
-    #             'templateId': self.MARKDOWN_TEMPLATE_ID,
-    #             'cardData': {
-    #                 'content': content,
-    #             }
-    #         }
-    #     }
-    #     response = requests.post(webhook, json=payload)
-    #     self.logger.info('agent reply, webhook={}, response={}, response.body={}', webhook, response, response.json())
-
-    # def get_dify_reply(self, query, user_id):
-    #     client = ChatClient(self.config.dify_api_key)
-    #     client.base_url = self.config.dify_base_url
-    #     reply = client.create_chat_message(inputs={},
-    #                                        query=query,
-    #                                        response_mode='blocking',
-    #                                        user=user_id)
-    #     reply.raise_for_status()
-    #     return reply.json()
