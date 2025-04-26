@@ -3,8 +3,6 @@ OpenWebUI通过OpenAPI方式支持MCP后，有多强大就不用多说了。
 本项目可快速连接钉钉助理到 OpenWebUI，可实现OpenWebUI消息直接推送到钉钉，目前只开发了文本和markdown卡片。
 ## 安装
 ``` shell
-    python -m venv .venv
-    source .venv/bin/activate
     pip install uv
     uv sync
 ```
