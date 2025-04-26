@@ -3,6 +3,7 @@ import dingtalk_stream
 
 from app.config import Config
 from app.open_web_ui_api import OpenWebUIApi
+from app.prompt.observation import SYSTEM_PROMPT as OBSERVATION_SYSTEM_PROMPT
 from loguru import logger
 class DingtalkCallback(dingtalk_stream.GraphHandler):
 
@@ -18,13 +19,42 @@ class DingtalkCallback(dingtalk_stream.GraphHandler):
                          request.request_line.method, request.request_line.uri,
                          request.body)
         payload = json.loads(request.body)
-        
+        react = True
+        function_results = []
+        while react:
+            # function 选择
+            function_name, function_args = await self.open_web_ui_api.choose_function(
+                self.config.open_web_ui_model_name,
+                payload['rawInput'],
+                function_results,
+                payload['sessionWebhook']
+            )
+            if function_name and function_args:
+                logger.info('function selected function_name: {}, function_args: {}', function_name, function_args)
+                # 调用 function
+                function_result = await self.open_web_ui_api.invoke_function(function_name, function_args, payload['sessionWebhook'])
+                if function_result:
+                    function_results.append(function_result)
+            else:
+                react = False
+                logger.info('no function selected')
+            # 先加上防止死循环  需要调试react prompt才行
+            react = False
+        messages = []
+        # system prompt
+        if function_results and len(function_results) > 0:
+            messages.append({
+                'role': 'system',
+                'content': OBSERVATION_SYSTEM_PROMPT.replace('{{function_results}}', json.dumps(function_results))
+            })
+        messages.append({
+            'role': 'user',
+            'content': payload['rawInput']
+        })
         await self.open_web_ui_api.chat_with_model_stream(
             self.config.open_web_ui_model_name,
-            [{'role': 'user', 'content': payload['rawInput']}],
-            payload['sessionWebhook'],
-            self.dingtalk_client,
-            dingtalk_stream.ChatbotMessage.from_dict(callback.data)
+            messages,
+            payload['sessionWebhook']
         )
         
         response = self.get_success_response()
