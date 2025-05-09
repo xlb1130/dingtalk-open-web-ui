@@ -1,9 +1,11 @@
 # function_call 的实例  内容使用的是 高德的mcp工具得到的  自行替换
 SYSTEM_PROMPT = """Available Tools: $$$functions$$$
 
-Your task is to choose and return the correct tool(s) from the list of available tools based on the query. Follow these guidelines:
+Your task is to choose and return the correct tool(s) from the list of available tools based on the query and history. Follow these guidelines:
 
 - Return only the JSON object, without any additional text or explanation.
+
+- Make sure that the match tools result were not already given in the history.
 
 - If no tools match the query, return an empty array: 
    {
