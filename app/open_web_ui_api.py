@@ -38,10 +38,15 @@ class OpenWebUIApi:
                 headers=self.headers,
                 timeout=config.open_web_ui_api_timeout
             )
-            open_api_result = open_api_util.parse_openapi_json(tool_server['url'],open_api_result.json())
-            for tool in open_api_result:
-                logger.info(f'function_name={tool["name"]}')
-                self.functions[tool['name']] = tool
+            
+            if 'openapi' in open_api_result.json():
+                open_api_result = open_api_util.parse_openapi_json(tool_server['url'],open_api_result.json())
+                for tool in open_api_result:
+                    logger.info(f'function_name={tool["name"]}')
+                    self.functions[tool['name']] = tool
+            else:
+                logger.error(f'{tool_server['url']}/{tool_server["path"]} result open_api_result={open_api_result.json()}')
+                
     async def choose_function(
         self,
         model_name: str,
@@ -112,7 +117,6 @@ class OpenWebUIApi:
             ) as response:
                 if response.status_code == 200:
                     content = ''
-                    logger.info('===========================================')
                     for line in response.iter_lines(decode_unicode=True):
                         logger.info(line)
                         if line:
