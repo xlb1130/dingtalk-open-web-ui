@@ -21,27 +21,40 @@ class DingtalkCallback(dingtalk_stream.GraphHandler):
         payload = json.loads(request.body)
         react = True
         function_results = []
+        messages = []
+        messages.append({
+            'role': 'user',
+            'content': payload['rawInput']
+        })
         while react:
             # function 选择
             function_name, function_args = await self.open_web_ui_api.choose_function(
                 self.config.open_web_ui_model_name,
                 payload['rawInput'],
-                function_results,
+                messages,
                 payload['sessionWebhook']
             )
             if function_name and function_args:
+                messages.append({
+                    'role': 'assistant',
+                    'content': f'function_call: {{"name": "{function_name}", "arguments": {function_args}}}'
+                })
                 logger.info('function selected function_name: {}, function_args: {}', function_name, function_args)
                 # 调用 function
                 function_result = await self.open_web_ui_api.invoke_function(function_name, function_args, payload['sessionWebhook'])
                 if function_result:
+                    messages.append({
+                        'role': 'tool',
+                        'content': function_result
+                    })
                     function_results.append(function_result)
             else:
                 react = False
                 logger.info('no function selected')
             # 先加上防止死循环  需要调试react prompt才行
-            react = False
-        messages = []
+            # react = False
         # system prompt
+        messages = []
         if function_results and len(function_results) > 0:
             messages.append({
                 'role': 'system',
